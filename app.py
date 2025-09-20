@@ -98,6 +98,11 @@ def validate_license():
         "message": "License validated successfully"
     }), 200
 
+# --- Health Check Endpoint ---
+@app.route('/health')
+def health_check():
+    return "OK", 200
+
 # --- Admin Panel Routes ---
 @app.route('/admin')
 @requires_auth
