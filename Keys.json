@@ -1,0 +1,32 @@
+{
+    "testkey1": {
+        "valid_for_days": 30,
+        "used_on_device": "70975892820491",
+        "revoked": false,
+        "issuance_date": "2025-08-19"
+    },
+    "KEY-TRIAL-002": {
+        "valid_for_days": 30,
+        "used_on_device": "TESTDEVICE",
+        "revoked": false,
+        "issuance_date": "2025-09-19"
+    },
+    "KEY-TRIAL-003": {
+        "valid_for_days": 30,
+        "used_on_device": "70975892820491",
+        "revoked": false,
+        "issuance_date": "2025-09-19"
+    },
+    "KEY-TRIAL-004": {
+        "valid_for_days": 30,
+        "used_on_device": "70975892820491",
+        "revoked": false,
+        "issuance_date": "2025-09-19"
+    },
+    "KEY-TRIAL-005": {
+        "valid_for_days": 30,
+        "used_on_device": "BFEBFBFF000506E3-To be filled by O.E.M.",
+        "revoked": false,
+        "issuance_date": "2025-09-19"
+    }
+}
