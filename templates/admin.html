@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>VA Mate Admin Panel</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        h1, h2 { color: #333; }
+        .section { margin-bottom: 2em; padding: 1em; border: 1px solid #ccc; border-radius: 8px; }
+        input[type="text"], input[type="number"] { width: 300px; padding: 8px; }
+        input[type="submit"] { padding: 10px 15px; background-color: #007BFF; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .key-list { list-style: none; padding: 0; }
+        .key-list li { background-color: #f4f4f4; padding: 10px; margin-bottom: 5px; border-radius: 4px; }
+        .key-list li.revoked { text-decoration: line-through; color: #888; }
+        .key-list li.assigned { font-weight: bold; }
+        .revoked-btn { background-color: #dc3545; }
+    </style>
+</head>
+<body>
+    <h1>VA Mate License Key Management</h1>
+
+    <div class="section">
+        <h2>Add a New Key</h2>
+        <form action="/add_key" method="post">
+            <label for="key">New License Key:</label><br>
+            <input type="text" id="key" name="key" required><br><br>
+            <label for="validity_days">Validity (days):</label><br>
+            <input type="number" id="validity_days" name="validity_days" value="30" required><br><br>
+            <input type="submit" value="Add Key">
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>Revoke an Existing Key</h2>
+        <form action="/revoke_key" method="post">
+            <label for="revoke_key_input">License Key to Revoke:</label><br>
+            <input type="text" id="revoke_key_input" name="key" required><br><br>
+            <input type="submit" value="Revoke Key" class="revoked-btn">
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>Current License Keys</h2>
+        <ul class="key-list">
+            {% for key, info in keys.items() %}
+                <li class="{% if info.revoked %}revoked{% elif info.get('used_on_device') %}assigned{% endif %}">
+                    <strong>{{ key }}</strong><br>
+                    Validity: {{ info.valid_for_days }} days<br>
+                    {% if info.get('used_on_device') %}
+                        Assigned to: {{ info.used_on_device }}<br>
+                    {% endif %}
+                    {% if info.revoked %}
+                        Status: Revoked
+                    {% else %}
+                        Status: Active
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</body>
+</html>
