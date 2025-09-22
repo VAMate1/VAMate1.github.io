@@ -105,7 +105,7 @@ def revoke_key():
         conn.close()
     return redirect('/admin')
 
-# --- NEW: Bulk Add and Key Generation Routes ---
+# --- Bulk Add and Key Generation Routes ---
 
 @app.route('/mass_add_keys', methods=['POST'])
 def mass_add_keys():
@@ -120,7 +120,7 @@ def mass_add_keys():
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
-            extras.execute_values(
+            psycopg2.extras.execute_values(
                 cursor,
                 "INSERT INTO licenses (key, valid_for_days) VALUES %s ON CONFLICT (key) DO NOTHING",
                 values
@@ -174,7 +174,7 @@ def generate_keys():
         values = [(key, validity_days) for key in keys_to_add]
 
         with conn.cursor() as cursor:
-            extras.execute_values(
+            psycopg2.extras.execute_values(
                 cursor,
                 "INSERT INTO licenses (key, valid_for_days) VALUES %s",
                 values
