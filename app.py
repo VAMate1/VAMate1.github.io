@@ -105,6 +105,20 @@ def revoke_key():
         conn.close()
     return redirect('/admin')
 
+# --- NEW: Route for Reinstating a Key ---
+@app.route('/reinstate_key', methods=['POST'])
+def reinstate_key():
+    key_to_reinstate = request.form.get('key')
+    conn = get_db_connection()
+    try:
+        with conn.cursor() as cursor:
+            # Set the 'revoked' flag to FALSE for the given key
+            cursor.execute("UPDATE licenses SET revoked = FALSE WHERE key = %s", (key_to_reinstate,))
+        conn.commit()
+    finally:
+        conn.close()
+    return redirect('/admin')
+
 # --- Bulk Add and Key Generation Routes ---
 
 @app.route('/mass_add_keys', methods=['POST'])
