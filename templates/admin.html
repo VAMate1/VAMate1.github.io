@@ -20,6 +20,8 @@
         .key-details { font-size: 0.9em; color: #555; margin-top: 5px; }
         .revoked-btn { background-color: #dc3545; }
         .revoked-btn:hover { background-color: #c82333; }
+        .reinstate-btn { background-color: #28a745; }
+        .reinstate-btn:hover { background-color: #218838; }
     </style>
 </head>
 <body>
@@ -72,6 +74,16 @@
             <input type="text" id="revoke_key_input" name="key" required>
             
             <input type="submit" value="Revoke Key" class="revoked-btn">
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>Reinstate a Revoked Key</h2>
+        <form action="/reinstate_key" method="post">
+            <label for="reinstate_key_input">License Key to Reinstate:</label>
+            <input type="text" id="reinstate_key_input" name="key" required>
+            
+            <input type="submit" value="Reinstate Key" class="reinstate-btn">
         </form>
     </div>
 
