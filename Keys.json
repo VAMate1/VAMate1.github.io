@@ -28,5 +28,12 @@
         "used_on_device": "BFEBFBFF000506E3-To be filled by O.E.M.",
         "revoked": false,
         "issuance_date": "2025-09-19"
+     },
+    "KEY-TRIAL-006": {
+        "valid_for_days": 30,
+        "used_on_device": false,
+        "revoked": false,
+        "issuance_date": false
     }
+
 }
