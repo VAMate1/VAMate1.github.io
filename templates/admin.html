@@ -3,28 +3,38 @@
 <head>
     <title>VA Mate Admin Panel</title>
     <style>
-        body { font-family: sans-serif; margin: 2em; }
+        body { font-family: sans-serif; margin: 2em; background-color: #f9f9f9; }
         h1, h2 { color: #333; }
-        .section { margin-bottom: 2em; padding: 1em; border: 1px solid #ccc; border-radius: 8px; }
-        input[type="text"], input[type="number"] { width: 300px; padding: 8px; }
-        input[type="submit"] { padding: 10px 15px; background-color: #007BFF; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .container { max-width: 800px; margin: auto; }
+        .section { margin-bottom: 2em; padding: 1.5em; border: 1px solid #ddd; border-radius: 8px; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], input[type="number"] { width: 95%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 1em; }
+        input[type="submit"] { padding: 10px 20px; background-color: #007BFF; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        input[type="submit"]:hover { background-color: #0056b3; }
         .key-list { list-style: none; padding: 0; }
-        .key-list li { background-color: #f4f4f4; padding: 10px; margin-bottom: 5px; border-radius: 4px; }
-        .key-list li.revoked { text-decoration: line-through; color: #888; }
-        .key-list li.assigned { font-weight: bold; }
+        .key-list li { background-color: #f4f4f4; padding: 15px; margin-bottom: 8px; border-radius: 4px; border-left: 5px solid #007BFF; }
+        .key-list li.revoked { border-left-color: #dc3545; }
+        .key-list li.revoked .key-value { text-decoration: line-through; color: #888; }
+        .key-list li.assigned { border-left-color: #28a745; }
+        .key-value { font-weight: bold; font-family: monospace; font-size: 1.1em; color: #333; }
+        .key-details { font-size: 0.9em; color: #555; margin-top: 5px; }
         .revoked-btn { background-color: #dc3545; }
+        .revoked-btn:hover { background-color: #c82333; }
     </style>
 </head>
 <body>
+<div class="container">
     <h1>VA Mate License Key Management</h1>
 
     <div class="section">
         <h2>Add a New Key</h2>
         <form action="/add_key" method="post">
-            <label for="key">New License Key:</label><br>
-            <input type="text" id="key" name="key" required><br><br>
-            <label for="validity_days">Validity (days):</label><br>
-            <input type="number" id="validity_days" name="validity_days" value="30" required><br><br>
+            <label for="key">New License Key:</label>
+            <input type="text" id="key" name="key" required>
+            
+            <label for="validity_days">Validity (days):</label>
+            <input type="number" id="validity_days" name="validity_days" value="30" required>
+            
             <input type="submit" value="Add Key">
         </form>
     </div>
@@ -32,8 +42,9 @@
     <div class="section">
         <h2>Revoke an Existing Key</h2>
         <form action="/revoke_key" method="post">
-            <label for="revoke_key_input">License Key to Revoke:</label><br>
-            <input type="text" id="revoke_key_input" name="key" required><br><br>
+            <label for="revoke_key_input">License Key to Revoke:</label>
+            <input type="text" id="revoke_key_input" name="key" required>
+            
             <input type="submit" value="Revoke Key" class="revoked-btn">
         </form>
     </div>
@@ -41,22 +52,19 @@
     <div class="section">
         <h2>Current License Keys</h2>
         <ul class="key-list">
-            {% for key, info in keys.items() %}
-                <li class="{% if info.revoked %}revoked{% elif info.get('used_on_device') %}assigned{% endif %}">
-                    <strong>{{ key }}</strong><br>
-                    Validity: {{ info.valid_for_days }} days<br>
-                    {% if info.get('used_on_device') %}
-                        Assigned to: {{ info.used_on_device }}<br>
-                    {% endif %}
-                    {% if info.revoked %}
-                        Status: Revoked
-                    {% else %}
-                        Status: Active
-                    {% endif %}
+            {% for record in keys %}
+                <li class="{% if record.revoked %}revoked{% elif record.used_on_device %}assigned{% endif %}">
+                    <div class="key-value">{{ record.key }}</div>
+                    <div class="key-details">
+                        <strong>Status:</strong> {% if record.revoked %}Revoked{% else %}Active{% endif %} |
+                        <strong>Validity:</strong> {{ record.valid_for_days }} days |
+                        <strong>Created:</strong> {{ record.creation_date.strftime('%Y-%m-%d %H:%M') }}<br>
+                        <strong>Assigned to:</strong> {{ record.used_on_device or 'Not yet assigned' }}
+                    </div>
                 </li>
             {% endfor %}
         </ul>
     </div>
-
+</div>
 </body>
 </html>
