@@ -20,6 +20,12 @@ def get_db_connection():
     conn = psycopg2.connect(DATABASE_URL)
     return conn
 
+# --- NEW: Health Check Endpoint ---
+@app.route('/health')
+def health_check():
+    """A simple and fast endpoint for uptime monitoring."""
+    return "OK", 200
+
 # --- Route for your client application to validate a key ---
 @app.route('/validate_license', methods=['POST'])
 def validate_license():
@@ -117,7 +123,6 @@ def reinstate_key():
         conn.close()
     return redirect('/admin')
 
-# --- NEW: Route for Modifying a Key's Duration ---
 @app.route('/modify_key', methods=['POST'])
 def modify_key():
     key_to_modify = request.form.get('key')
@@ -125,7 +130,6 @@ def modify_key():
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
-            # Update the 'valid_for_days' column for the given key
             cursor.execute(
                 "UPDATE licenses SET valid_for_days = %s WHERE key = %s",
                 (new_validity_days, key_to_modify)
