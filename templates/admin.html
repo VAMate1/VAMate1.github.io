@@ -22,6 +22,8 @@
         .revoked-btn:hover { background-color: #c82333; }
         .reinstate-btn { background-color: #28a745; }
         .reinstate-btn:hover { background-color: #218838; }
+        .modify-btn { background-color: #ffc107; color: #212529;}
+        .modify-btn:hover { background-color: #e0a800; }
     </style>
 </head>
 <body>
@@ -64,6 +66,19 @@
             <input type="number" id="generate_validity_days" name="validity_days" value="30" required>
             
             <input type="submit" value="Generate and Add">
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>Modify Key Duration</h2>
+        <form action="/modify_key" method="post">
+            <label for="modify_key_input">License Key to Modify:</label>
+            <input type="text" id="modify_key_input" name="key" required>
+
+            <label for="modify_validity_days">New Validity (days):</label>
+            <input type="number" id="modify_validity_days" name="validity_days" value="30" required>
+            
+            <input type="submit" value="Update Duration" class="modify-btn">
         </form>
     </div>
 
